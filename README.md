@@ -52,7 +52,3 @@ The C++ Standard Template Library (STL) is powerful, but it is **not suitable fo
 * Embedded task scheduling
 
 ---
-
-## Author
-Naren Karthik
-Designed and implemented as part of an embedded systems portfolio to demonstrate **low-level programming, memory management, and system-level thinking**.
