@@ -12,12 +12,18 @@ The library is intended to:
 * Provide deterministic behavior
 * Be safe for use in resource-constrained systems
 * Serve as a reusable foundation for embedded projects (e.g., sensor buffering, CAN message queues, RTOS-style task queues)
-
+Designed with deterministic execution time suitable for real-time systems
+Supports compile-time configuration for memory and size constraints
+Focuses on low memory footprint and high reliability
+Provides modular and reusable components for embedded firmware
 ---
 
 ## Why No STL?
 
 The C++ Standard Template Library (STL) is powerful, but it is **not suitable for many embedded systems**. This project intentionally avoids STL to reflect **real-world embedded constraints**.
+Code Size Overhead: STL increases binary size, which is critical in embedded systems
+Exception Handling Cost: Exceptions used in STL are often disabled in embedded builds
+Template Complexity: Harder to debug and optimize for low-level systems
 
 ### Reasons for Avoiding STL:
 
