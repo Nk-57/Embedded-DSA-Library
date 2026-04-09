@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wild Animal Intrusion Monitoring</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f0f4f3;
+}
+
+header {
+    background: #1b5e20;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+.node {
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.safe { background: #2e7d32; }
+.triggered { background: #d32f2f; }
+.nearby { background: #f9a825; }
+.hotspot { background: #000; }
+
+.panel {
+    background: white;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+button {
+    padding: 10px 20px;
+    background: #1b5e20;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2>Wild Animal Intrusion Monitoring Dashboard</h2>
+</header>
+
+<div class="container">
+
+<div class="panel">
+<button onclick="simulateMovement()">Simulate Animal Movement</button>
+<p><b>Hotspot Threshold:</b> 3 triggers</p>
+</div>
+
+<div class="grid" id="field"></div>
+
+<div class="panel">
+<h3>System Log</h3>
+<ul id="log"></ul>
+</div>
+
+</div>
+
+<script>
+const GRID_SIZE = 15;
+const HOTSPOT_THRESHOLD = 3;
+
+let nodes = [];
+let triggerCount = {};
+
+const field = document.getElementById("field");
+const logBox = document.getElementById("log");
+
+for(let i=0;i<GRID_SIZE;i++){
+    nodes.push({id:i, state:"safe"});
+    triggerCount[i] = 0;
+}
+
+function render(){
+    field.innerHTML = "";
+    nodes.forEach(n=>{
+        const div = document.createElement("div");
+        div.className = "node " + n.state;
+        div.innerText = "Node " + n.id;
+        field.appendChild(div);
+    });
+}
+
+function log(msg){
+    const li = document.createElement("li");
+    li.innerText = msg;
+    logBox.prepend(li);
+}
+
+function simulateMovement(){
+    nodes.forEach(n => n.state = "safe");
+
+    let index = Math.floor(Math.random()*GRID_SIZE);
+
+    nodes[index].state = "triggered";
+    triggerCount[index]++;
+
+    log("Intrusion detected at Node " + index);
+
+    // collective response
+    if(index+1 < GRID_SIZE) nodes[index+1].state = "nearby";
+    if(index-1 >= 0) nodes[index-1].state = "nearby";
+
+    // hotspot detection
+    for(let i=0;i<GRID_SIZE;i++){
+        if(triggerCount[i] >= HOTSPOT_THRESHOLD){
+            nodes[i].state = "hotspot";
+            log("Hotspot identified at Node " + i);
+        }
+    }
+
+    render();
+}
+
+render();
+</script>
+
+</body>
+</html>
